@@ -1,4 +1,4 @@
-from clique.daemon import integrations as i
+from openmacros.daemon import integrations as i
 
 
 def test_pick_player():
@@ -126,11 +126,11 @@ def test_window_controller_no_active_or_errors():
 
 
 def test_ai_request_urls():
-    url, clip = i.build_ai_request("claude", "Explique: {selection}", "a b&c")
+    url, clip = i.build_ai_request("claude", "Explique: {selection}", "a b&c", "url")
     assert url == "https://claude.ai/new?q=Explique%3A%20a%20b%26c" and clip is None
-    assert i.build_ai_request("chatgpt", "{selection}", "x")[0] == "https://chatgpt.com/?q=x"
-    assert i.build_ai_request("perplexity", "{selection}", "x")[0].startswith("https://www.perplexity.ai/search?q=")
+    assert i.build_ai_request("chatgpt", "{selection}", "x", "url")[0] == "https://chatgpt.com/?q=x"
+    assert i.build_ai_request("perplexity", "{selection}", "x", "url")[0].startswith("https://www.perplexity.ai/search?q=")
     url, clip = i.build_ai_request("gemini", "Resuma: {selection}", "texto")
     assert url == "https://gemini.google.com/app" and clip == "Resuma: texto"
-    url, _ = i.build_ai_request("claude", "{selection}", "x" * 50000)
+    url, _ = i.build_ai_request("claude", "{selection}", "x" * 50000, "url")
     assert len(url) < 7000

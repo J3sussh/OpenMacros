@@ -1,4 +1,4 @@
-from clique.hidpp.features import reprog
+from openmacros.hidpp.features import reprog
 
 
 def test_divert_rawxy_gesture_button_exact_bytes():

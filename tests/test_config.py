@@ -1,6 +1,6 @@
 import json
 
-from clique.daemon.config import Config
+from openmacros.daemon.config import Config
 
 
 def test_roundtrip_and_atomic(tmp_path):
@@ -58,11 +58,11 @@ def test_invalid_entries_discarded(tmp_path):
 
 
 def test_default_path_ignores_relative_xdg(monkeypatch, tmp_path):
-    from clique.daemon.config import default_path
+    from openmacros.daemon.config import default_path
     monkeypatch.setenv("XDG_CONFIG_HOME", "relativo/dir")
     assert default_path().is_absolute() and "relativo" not in str(default_path())
     monkeypatch.setenv("XDG_CONFIG_HOME", str(tmp_path))
-    assert default_path() == tmp_path / "clique" / "config.json"
+    assert default_path() == tmp_path / "openmacros" / "config.json"
 
 
 def test_profiles_and_smart_actions_roundtrip(tmp_path):
@@ -99,3 +99,27 @@ def test_profile_and_smart_validation_on_load(tmp_path):
     assert set(c.smart_actions) == {"sa_ok"}
     p.write_text(json.dumps({"version": 1, "devices": {}, "smart_actions": [1]}))
     assert Config(p).smart_actions == {}
+
+
+def test_migrate_legacy_config_copies_once(tmp_path, monkeypatch):
+    from openmacros.daemon.config import default_path, migrate_legacy_config
+    monkeypatch.setenv("XDG_CONFIG_HOME", str(tmp_path))
+    old = tmp_path / "clique"
+    (old / "sub").mkdir(parents=True)
+    (old / "config.json").write_text('{"version": 1, "devices": {"d": {"assignments": {"82": {"type": "disabled"}}}}}')
+    (old / "sub" / "x.txt").write_text("x")
+    new = default_path()
+    assert migrate_legacy_config(new) is True
+    assert (old / "config.json").exists()                      # copia, não move
+    assert (tmp_path / "openmacros" / "sub" / "x.txt").read_text() == "x"
+    assert Config(new).device("d")["assignments"] == {"82": {"type": "disabled"}}
+    # segunda vez: o novo já existe; mudanças nele não são sobrescritas
+    (tmp_path / "openmacros" / "config.json").write_text("{}")
+    assert migrate_legacy_config(new) is False
+    assert (tmp_path / "openmacros" / "config.json").read_text() == "{}"
+
+
+def test_migrate_legacy_config_noop_without_old(tmp_path):
+    from openmacros.daemon.config import migrate_legacy_config
+    assert migrate_legacy_config(tmp_path / "openmacros" / "config.json") is False
+    assert not (tmp_path / "openmacros").exists()

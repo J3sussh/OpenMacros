@@ -1,0 +1,25 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+  configure)
+    # Tudo best-effort: em chroot/container não há udevd nem systemd rodando.
+    if command -v udevadm >/dev/null 2>&1; then
+      udevadm control --reload-rules 2>/dev/null || true
+      udevadm trigger --subsystem-match=hidraw --subsystem-match=misc 2>/dev/null || true
+    fi
+    if command -v systemctl >/dev/null 2>&1; then
+      systemctl --global enable openmacrosd.service >/dev/null 2>&1 || true
+    fi
+    if command -v modprobe >/dev/null 2>&1; then
+      modprobe uinput 2>/dev/null || true
+    fi
+    if command -v py3compile >/dev/null 2>&1; then
+      py3compile -p openmacros-plus 2>/dev/null || true
+    fi
+    echo "OpenMacros+ instalado. Faça logout e login para ativar o serviço e a regra udev." >&2
+    echo "OpenMacros+ installed. Log out and back in to activate the service and udev rule." >&2
+    ;;
+esac
+
+exit 0

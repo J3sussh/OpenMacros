@@ -1,13 +1,13 @@
 """HidppBackend/RealDevice contra um dispositivo HID++ simulado (sem hardware)."""
 import json
 
-from clique.daemon.actions import ActionExecutor, NullBackend
-from clique.daemon.config import Config
-from clique.daemon.hidpp_backend import HidppBackend
-from clique.daemon.manager import Manager
-from clique.hidpp import messages as m
-from clique.hidpp.fake import SimulatedDevice
-from clique.hidpp.transport import FakeTransport, HidrawInfo
+from openmacros.daemon.actions import ActionExecutor, NullBackend
+from openmacros.daemon.config import Config
+from openmacros.daemon.hidpp_backend import HidppBackend
+from openmacros.daemon.manager import Manager
+from openmacros.hidpp import messages as m
+from openmacros.hidpp.fake import SimulatedDevice
+from openmacros.hidpp.transport import FakeTransport, HidrawInfo
 
 NAME = b"M720 Triathlon"
 CTRL = {0: bytes.fromhex("0052003a7100020301"), 1: bytes.fromhex("00d000ad7100020301")}
@@ -24,7 +24,7 @@ def make_sim():
         return p
 
     handlers = {
-        0x0003: lambda fn, p: bytes([1, 0xFE, 0x90, 0x58, 0x1C]),
+        0x0003: lambda fn, p: bytes([1, 0x1A, 0x2B, 0x3C, 0x4D]),
         0x0005: lambda fn, p: (bytes([len(NAME)]) if fn == 0 else
                                NAME[p[0]:p[0] + 16].ljust(16, b"\0") if fn == 1 else b"\x03"),
         0x1000: lambda fn, p: bytes([50, 30, 0]),
@@ -43,7 +43,7 @@ def test_backend_with_direct_device(tmp_path):
     be = HidppBackend(mgr)
     be.attach(HidrawInfo("/dev/fake", 0x0005, 0x046D, 0xB015, "M720", True), tr)
     d = json.loads(mgr.get_devices())[0]
-    assert d["id"] == "logi:FE90581C"
+    assert d["id"] == "logi:1A2B3C4D"
     assert d["name"] == "M720 Triathlon" and d["connection"] == "bluetooth" and d["layout"] == "m720"
     assert d["battery"]["level"] == 50
     assert [c["cid"] for c in d["controls"]] == [0x52, 0xD0]

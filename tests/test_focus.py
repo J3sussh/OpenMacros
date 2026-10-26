@@ -1,5 +1,5 @@
-from clique.daemon import focus as f
-from clique.daemon.timers import ManualScheduler
+from openmacros.daemon import focus as f
+from openmacros.daemon.timers import ManualScheduler
 
 
 def test_app_id_rules():

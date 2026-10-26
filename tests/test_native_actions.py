@@ -2,10 +2,10 @@
 import pytest
 from evdev import ecodes
 
-from clique.daemon.actions import (ActionExecutor, NullBackend, SmartActionRunner, validate_action,
+from openmacros.daemon.actions import (ActionExecutor, NullBackend, SmartActionRunner, validate_action,
                                    validate_smart_action)
-from clique.daemon.gestures import ActionEvent
-from clique.daemon.timers import ManualScheduler
+from openmacros.daemon.gestures import ActionEvent
+from openmacros.daemon.timers import ManualScheduler
 
 
 class Rec:
@@ -36,6 +36,9 @@ class Sel:
 
     def read_primary(self):
         return self.text
+
+    def read_clipboard(self):
+        return None
 
     def write_clipboard(self, t):
         self.clip.append(t)
@@ -88,7 +91,7 @@ def test_open_url_and_desktop():
 
 def test_type_text_events_and_unmappable_skipped():
     ex, be, _ = make()
-    trig(ex, {"type": "type_text", "text": "Hi é"})
+    trig(ex, {"type": "type_text", "text": "Hi é", "method": "keys"})
     sh, h, i_, sp = ecodes.KEY_LEFTSHIFT, ecodes.KEY_H, ecodes.KEY_I, ecodes.KEY_SPACE
     assert be.log == [("key", sh, 1), ("key", h, 1), ("key", h, 0), ("key", sh, 0),
                       ("key", i_, 1), ("key", i_, 0), ("key", sp, 1), ("key", sp, 0)]
@@ -104,9 +107,9 @@ def test_window_dispatch():
 def test_ai_prompt_claude_and_gemini():
     op, sel = Opener(), Sel("trecho selecionado")
     ex, *_ = make(opener=op, selection=sel)
-    trig(ex, {"type": "ai_prompt", "service": "claude", "template": "Explique: {selection}"})
+    trig(ex, {"type": "ai_prompt", "service": "claude", "template": "Explique: {selection}", "delivery": "url"})
     assert op.uris == ["https://claude.ai/new?q=Explique%3A%20trecho%20selecionado"] and sel.clip == []
-    trig(ex, {"type": "ai_prompt", "service": "gemini", "template": "Resuma: {selection}"})
+    trig(ex, {"type": "ai_prompt", "service": "gemini", "template": "Resuma: {selection}", "delivery": "url"})
     assert op.uris[-1] == "https://gemini.google.com/app" and sel.clip == ["Resuma: trecho selecionado"]
 
 

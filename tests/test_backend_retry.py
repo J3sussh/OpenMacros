@@ -3,13 +3,13 @@ import time
 
 from gi.repository import GLib
 
-from clique.daemon import hidpp_backend as hb
-from clique.daemon.actions import ActionExecutor, NullBackend
-from clique.daemon.config import Config
-from clique.daemon.manager import Manager
-from clique.hidpp import messages as m
-from clique.hidpp.fake import SimulatedDevice
-from clique.hidpp.transport import FakeTransport, HidrawInfo
+from openmacros.daemon import hidpp_backend as hb
+from openmacros.daemon.actions import ActionExecutor, NullBackend
+from openmacros.daemon.config import Config
+from openmacros.daemon.manager import Manager
+from openmacros.hidpp import messages as m
+from openmacros.hidpp.fake import SimulatedDevice
+from openmacros.hidpp.transport import FakeTransport, HidrawInfo
 
 
 def _mgr():
@@ -114,7 +114,7 @@ def test_on_readable_never_raises_and_drop_on_close(monkeypatch):
     entry.channel = Boom()
     assert be._on_readable(0, GLib.IOCondition.IN, entry) is True  # mantém a fonte
 
-    from clique.hidpp.transport import TransportClosed
+    from openmacros.hidpp.transport import TransportClosed
 
     class Gone:
         def pump(self):

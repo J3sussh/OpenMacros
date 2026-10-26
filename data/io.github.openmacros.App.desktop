@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=OpenMacros+
+GenericName=Configurador de mouses e teclados Logitech
+Comment=Configure botões, ponteiro e Easy-Switch de dispositivos Logitech
+Exec=openmacros
+Icon=io.github.openmacros.App
+Terminal=false
+Categories=Settings;HardwareSettings;GTK;
+Keywords=logitech;mouse;teclado;botões;dpi;
+StartupNotify=true
+StartupWMClass=io.github.openmacros.App

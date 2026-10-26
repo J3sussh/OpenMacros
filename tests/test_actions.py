@@ -1,7 +1,7 @@
 import pytest
 
-from clique.daemon.actions import ActionExecutor, NullBackend, validate_action
-from clique.daemon.gestures import ActionEvent
+from openmacros.daemon.actions import ActionExecutor, NullBackend, validate_action
+from openmacros.daemon.gestures import ActionEvent
 from evdev import ecodes
 
 

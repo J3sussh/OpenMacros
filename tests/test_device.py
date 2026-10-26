@@ -1,8 +1,8 @@
 import pytest
 
-from clique.hidpp import messages as m
-from clique.hidpp.device import FeatureNotSupported
-from clique.hidpp.features import battery, hosts, names, pointer, smartshift, wheel, dpi
+from openmacros.hidpp import messages as m
+from openmacros.hidpp.device import FeatureNotSupported
+from openmacros.hidpp.features import battery, hosts, names, pointer, smartshift, wheel, dpi
 
 
 def test_ping_and_featureset(make_device):
@@ -38,9 +38,9 @@ def test_hidpp20_error_raised(make_device):
 
 
 def test_ping_hidpp10_device():
-    from clique.hidpp.channel import Channel
-    from clique.hidpp.device import Device
-    from clique.hidpp.transport import FakeTransport
+    from openmacros.hidpp.channel import Channel
+    from openmacros.hidpp.device import Device
+    from openmacros.hidpp.transport import FakeTransport
 
     def responder(raw):
         req = m.parse(raw)

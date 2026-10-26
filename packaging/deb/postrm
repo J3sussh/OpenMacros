@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+  remove|purge)
+    # a regra udev já saiu do disco: recarrega (best-effort; não há udevd em chroot/container)
+    if command -v udevadm >/dev/null 2>&1; then
+      udevadm control --reload-rules 2>/dev/null || true
+    fi
+    ;;
+esac
+
+exit 0

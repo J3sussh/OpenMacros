@@ -1,0 +1,59 @@
+name: Device support
+description: Report a device that works, partly works or does not work
+labels: [device]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        See docs/DEVICES.md for how to collect this data.
+        Remove serial numbers, `unitId` and the device `id` (`logi:...`) before posting.
+        Do not attach images, icons or text from Logitech software.
+  - type: input
+    id: model
+    attributes:
+      label: Device model
+      placeholder: "Logitech M720 Triathlon"
+    validations:
+      required: true
+  - type: input
+    id: pid
+    attributes:
+      label: USB/Bluetooth product ID (PID)
+      description: "From lsusb or the model_id field in GetDevices."
+      placeholder: "405e"
+    validations:
+      required: true
+  - type: dropdown
+    id: connection
+    attributes:
+      label: Connection
+      options: [Bluetooth, "Receiver (Unifying)", "Receiver (Bolt)", "Receiver (Lightspeed/Nano)", "USB cable", Other]
+    validations:
+      required: true
+  - type: textarea
+    id: getdevices
+    attributes:
+      label: GetDevices output
+      description: "Output of: busctl --user call io.github.openmacros /io/github/openmacros io.github.openmacros.Manager1 GetDevices"
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: features
+    attributes:
+      label: HID++ features
+      description: "The features list (and controls) from GetDevices, or from the About tab and OPENMACROS_LOG=DEBUG output."
+      render: text
+  - type: textarea
+    id: tested
+    attributes:
+      label: What you tested
+      description: "Button remapping, gestures, DPI/speed, scrolling, Easy-Switch, battery, reconnect after suspend. Say what worked and what did not."
+    validations:
+      required: true
+  - type: checkboxes
+    id: pr
+    attributes:
+      label: Contribution
+      options:
+        - label: I can open a pull request with a layout and my own SVG art

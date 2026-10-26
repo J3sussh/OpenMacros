@@ -1,4 +1,4 @@
-from clique.daemon.gestures import ButtonRouter, GestureTracker
+from openmacros.daemon.gestures import ButtonRouter, GestureTracker
 
 KEYS = {"type": "keys", "keys": ["KEY_LEFTCTRL", "KEY_C"]}
 GEST = {"type": "gestures", "threshold": 50, "click": {"type": "default"},

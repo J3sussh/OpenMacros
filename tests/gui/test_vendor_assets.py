@@ -7,9 +7,10 @@ from pathlib import Path
 
 import pytest
 
-from clique import vendor_assets as va
+from openmacros import vendor_assets as va
 
-REAL = Path("/home/victor/re/logi-options/offline/depots.zip")
+# arquivo real opcional (depots.zip do instalador offline); defina OPENMACROS_TEST_DEPOTS para habilitar
+REAL = Path(os.environ.get("OPENMACROS_TEST_DEPOTS") or "/nonexistent/depots.zip")
 
 
 def make_depot(files: dict[str, bytes]) -> bytes:
@@ -172,12 +173,31 @@ def test_invalid_files(tmp_path):
 
 def test_vendor_dir_xdg(monkeypatch, tmp_path):
     monkeypatch.setenv("XDG_DATA_HOME", str(tmp_path))
-    assert va.vendor_dir() == tmp_path / "clique" / "vendor"
+    assert va.vendor_dir() == tmp_path / "openmacros" / "vendor"
     with pytest.raises(ValueError):
         va.vendor_pid_dir("../x")
 
 
-@pytest.mark.skipif(not REAL.exists(), reason="depots.zip real ausente")
+def test_migrate_legacy_vendor_copies_once(monkeypatch, tmp_path):
+    monkeypatch.setenv("XDG_DATA_HOME", str(tmp_path))
+    old = tmp_path / "clique" / "vendor" / "b015"
+    old.mkdir(parents=True)
+    (old / "layout.json").write_text("{}")
+    assert va.migrate_legacy_vendor() is True
+    assert (old / "layout.json").exists()                                   # copia, não move
+    assert (tmp_path / "openmacros" / "vendor" / "b015" / "layout.json").read_text() == "{}"
+    (tmp_path / "openmacros" / "vendor" / "novo.txt").write_text("n")
+    assert va.migrate_legacy_vendor() is False                              # só uma vez
+    assert (tmp_path / "openmacros" / "vendor" / "novo.txt").exists()
+
+
+def test_migrate_legacy_vendor_noop_without_old(monkeypatch, tmp_path):
+    monkeypatch.setenv("XDG_DATA_HOME", str(tmp_path))
+    assert va.migrate_legacy_vendor() is False
+    assert not (tmp_path / "openmacros").exists()
+
+
+@pytest.mark.skipif(not REAL.exists(), reason="OPENMACROS_TEST_DEPOTS ausente ou inválido")
 def test_real_archive_b015(tmp_path):
     root = tmp_path / "vendor"
     res = va.import_assets(REAL, ["b015"], root=root)

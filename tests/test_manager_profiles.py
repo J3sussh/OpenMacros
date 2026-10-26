@@ -3,12 +3,12 @@ import json
 import pytest
 from evdev import ecodes
 
-from clique.daemon import manager as mg
-from clique.daemon.actions import ActionExecutor, NullBackend
-from clique.daemon.config import Config
-from clique.daemon.fake import FakeBackend
-from clique.daemon.focus import FakeFocusWatcher
-from clique.daemon.timers import ManualScheduler
+from openmacros.daemon import manager as mg
+from openmacros.daemon.actions import ActionExecutor, NullBackend
+from openmacros.daemon.config import Config
+from openmacros.daemon.fake import FakeBackend
+from openmacros.daemon.focus import FakeFocusWatcher
+from openmacros.daemon.timers import ManualScheduler
 
 M720 = "logi:FA4E720A"
 KEYS_A = {"type": "keys", "keys": ["KEY_A"]}
@@ -141,7 +141,7 @@ def test_null_removes_override_and_cleans_firmware(env):
     act(env, "firefox", 83, KEYS_A)
     assert env.set_profile_assignment(M720, "firefox", 83, "null")
     assert env.dev.reporting[83] == (False, False, 0)
-    assert json.loads(env.get_device(M720))["profiles"]["firefox"]["assignments"] == {}
+    assert "firefox" not in json.loads(env.get_device(M720))["profiles"]  # perfil vazio some (B4)
 
 
 def test_device_json_has_profiles_and_active_profile(env):
@@ -216,7 +216,7 @@ def test_set_profile_setting_active_app_applies_immediately_and_null_removes(env
     env.set_profile_setting(M720, "code", "pointer_speed", "123")
     assert env.dev.describe()["settings"]["pointer_speed"]["value"] == 123
     env.set_profile_setting(M720, "code", "pointer_speed", "null")
-    assert json.loads(env.get_device(M720))["profiles"]["code"]["settings"] == {}
+    assert "code" not in json.loads(env.get_device(M720))["profiles"]  # perfil vazio some (B4)
     with pytest.raises(mg.InvalidArgument):
         env.set_profile_setting(M720, "code", "pointer_speed", "99999")
     with pytest.raises(mg.Unsupported):
@@ -247,13 +247,17 @@ SA = {"name": "Dia", "icon": "weather-clear-symbolic",
                 {"type": "volume", "op": "mute"}]}
 
 
+def save_id(env, sa):
+    return json.loads(env.save_smart_action(json.dumps(sa)))["id"]
+
+
 def test_smart_action_crud_and_run_via_button(env):
-    sid = env.save_smart_action(json.dumps(SA))
+    sid = save_id(env, SA)
     assert sid.startswith("sa_")
     assert json.loads(env.get_smart_actions())[sid]["steps"][0]["op"] == "play_pause"
     assert ("smart_actions_changed", ()) in env.signals
     sa2 = dict(SA, id=sid, name="Novo nome")
-    assert env.save_smart_action(json.dumps(sa2)) == sid
+    assert save_id(env, sa2) == sid
     assert json.loads(env.get_smart_actions())[sid]["name"] == "Novo nome"
     act(env, "", 82, {"type": "smart_action", "id": sid})
     env.dev.simulate("key_report", [82]); env.dev.simulate("key_report", [])
@@ -269,8 +273,8 @@ def test_smart_action_crud_and_run_via_button(env):
 
 
 def test_delete_smart_action_replaces_references_with_default(env):
-    sid = env.save_smart_action(json.dumps(SA))
-    other = env.save_smart_action(json.dumps(SA))
+    sid = save_id(env, SA)
+    other = save_id(env, SA)
     ref = {"type": "smart_action", "id": sid}
     act(env, "", 82, ref)
     act(env, "firefox", 83, ref)

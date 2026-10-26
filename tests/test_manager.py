@@ -2,10 +2,10 @@ import json
 
 import pytest
 
-from clique.daemon import manager as mg
-from clique.daemon.actions import ActionExecutor, NullBackend
-from clique.daemon.config import Config
-from clique.daemon.fake import FakeBackend
+from openmacros.daemon import manager as mg
+from openmacros.daemon.actions import ActionExecutor, NullBackend
+from openmacros.daemon.config import Config
+from openmacros.daemon.fake import FakeBackend
 
 
 @pytest.fixture
@@ -184,8 +184,8 @@ def test_size_limit_and_command_validation(mgr):
 
 
 def test_recording_executor_logs_instead_of_executing(tmp_path):
-    from clique.daemon.actions import RecordingExecutor
-    from clique.daemon.timers import ManualScheduler
+    from openmacros.daemon.actions import RecordingExecutor
+    from openmacros.daemon.timers import ManualScheduler
     sched = ManualScheduler()
     ex = RecordingExecutor(scheduler=sched)
     m = mg.Manager(Config(None), ex, sched)

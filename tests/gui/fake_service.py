@@ -1,4 +1,4 @@
-"""Serviço D-Bus falso que implementa o contrato io.github.clique.Manager1 (para testes da GUI)."""
+"""Serviço D-Bus falso que implementa o contrato io.github.openmacros.Manager1 (para testes da GUI)."""
 
 import json
 import sys
@@ -9,7 +9,7 @@ gi.require_version("Gio", "2.0")
 from gi.repository import Gio, GLib  # noqa: E402
 
 XML = """
-<node><interface name="io.github.clique.Manager1">
+<node><interface name="io.github.openmacros.Manager1">
   <method name="GetDevices"><arg type="s" direction="out"/></method>
   <method name="GetDevice"><arg type="s" direction="in"/><arg type="s" direction="out"/></method>
   <method name="SetAssignment"><arg type="s" direction="in"/><arg type="q" direction="in"/><arg type="s" direction="in"/><arg type="b" direction="out"/></method>
@@ -26,9 +26,20 @@ XML = """
   <method name="SaveSmartAction"><arg type="s" direction="in"/><arg type="s" direction="out"/></method>
   <method name="DeleteSmartAction"><arg type="s" direction="in"/><arg type="b" direction="out"/></method>
   <method name="RunAction"><arg type="s" direction="in"/><arg type="b" direction="out"/></method>
+  <method name="SetSmartActionEnabled"><arg type="s" direction="in"/><arg type="b" direction="in"/><arg type="b" direction="out"/></method>
+  <method name="ExportSmartAction"><arg type="s" direction="in"/><arg type="s" direction="out"/></method>
+  <method name="ImportSmartAction"><arg type="s" direction="in"/><arg type="s" direction="out"/></method>
+  <method name="GetRunningApps"><arg type="s" direction="out"/></method>
+  <method name="GetPreferences"><arg type="s" direction="out"/></method>
+  <method name="SetPreference"><arg type="s" direction="in"/><arg type="s" direction="in"/><arg type="b" direction="out"/></method>
+  <method name="ExportConfig"><arg type="s" direction="out"/></method>
+  <method name="ImportConfig"><arg type="s" direction="in"/><arg type="b" direction="in"/><arg type="b" direction="out"/></method>
   <method name="DebugSetActiveApp"><arg type="s" direction="in"/></method>
   <signal name="ActiveAppChanged"><arg type="s"/></signal>
   <signal name="SmartActionsChanged"/>
+  <signal name="SmartActionTriggered"><arg type="s"/><arg type="s"/></signal>
+  <signal name="PreferencesChanged"><arg type="s"/></signal>
+  <signal name="ActionTriggered"><arg type="s"/><arg type="q"/><arg type="s"/></signal>
   <signal name="DevicesChanged"/>
   <signal name="DeviceUpdated"><arg type="s"/><arg type="s"/></signal>
   <signal name="Error"><arg type="s"/><arg type="s"/></signal>
@@ -52,7 +63,7 @@ M720 = {
         "pointer_speed": {"value": 256, "min": 1, "max": 512},
         "hires_scroll": {"value": True}, "scroll_invert": {"value": False},
     },
-    "hosts": {"count": 3, "current": 0, "names": ["BSIT-0661", "Hackbook", "HY300"]},
+    "hosts": {"count": 3, "current": 0, "names": ["Desktop", "Laptop", "Tablet"]},
     "assignments": {"83": {"type": "keys", "keys": ["KEY_LEFTCTRL", "KEY_C"]},
                     "208": {"type": "gestures", "click": {"type": "default"}, "up": {"type": "disabled"},
                             "down": {"type": "default"}, "left": {"type": "default"},
@@ -76,7 +87,15 @@ KEYBOARD = {
 
 
 class FakeService:
-    def __init__(self, bus_type=Gio.BusType.SESSION):
+    def __init__(self, bus_type=Gio.BusType.SESSION, v2=True, sa2=True):
+        self.v2 = v2  # False simula um daemon antigo (UnknownMethod nos membros novos)
+        # sa2=False: daemon sem Smart Actions v2 (SaveSmartAction devolve id puro; membros novos => UnknownMethod)
+        self.sa2 = sa2
+        self.taken_shortcut = ["KEY_LEFTCTRL", "KEY_LEFTALT", "KEY_L"]  # "já usada" => trigger_errors
+        self.ran: list[dict] = []
+        self.prefs = {"notify_battery": True, "battery_threshold": 15, "osd_profile": True, "osd_gestures": True,
+                      "notify_connection": False, "ai_delivery_default": "clipboard"}
+        self.imported: list[tuple] = []
         self.devices = {d["id"]: json.loads(json.dumps(d)) for d in (M720, KEYBOARD)}
         self.calls: list[tuple] = []
         self.active_app = {"app_id": "", "wm_class": [], "title": "", "pid": 0, "exe": ""}
@@ -85,24 +104,25 @@ class FakeService:
         self.smart = {"sa_demo01": {"name": "Começar o dia", "icon": "weather-clear-symbolic",
                                     "steps": [{"type": "open", "target": "https://example.org"}, {"type": "delay", "ms": 500},
                                               {"type": "media", "op": "play_pause"}]}}
+        self.running = [{"app_id": "firefox", "wm_class": ["Navigator", "firefox"], "title": "Mozilla Firefox", "pid": 1, "exe": "firefox-esr"}]
         self.conn = None
-        self.owner = Gio.bus_own_name(bus_type, "io.github.clique", Gio.BusNameOwnerFlags.NONE,
+        self.owner = Gio.bus_own_name(bus_type, "io.github.openmacros", Gio.BusNameOwnerFlags.NONE,
                                       self._bus_acquired, None, None)
 
     def _bus_acquired(self, conn, name):
         self.conn = conn
         info = Gio.DBusNodeInfo.new_for_xml(XML)
-        conn.register_object("/io/github/clique", info.interfaces[0], self._call, None, None)
+        conn.register_object("/io/github/openmacros", info.interfaces[0], self._call, None, None)
 
     def stop(self):
         Gio.bus_unown_name(self.owner)
 
     def emit(self, signal, params):
-        self.conn.emit_signal(None, "/io/github/clique", "io.github.clique.Manager1", signal, params)
+        self.conn.emit_signal(None, "/io/github/openmacros", "io.github.openmacros.Manager1", signal, params)
 
     def _dev(self, inv, dev_id):
         if dev_id not in self.devices:
-            inv.return_dbus_error("io.github.clique.Error.NotFound", dev_id)
+            inv.return_dbus_error("io.github.openmacros.Error.NotFound", dev_id)
             return None
         return self.devices[dev_id]
 
@@ -113,6 +133,31 @@ class FakeService:
             inv.return_value(GLib.Variant("(s)", (json.dumps(list(self.devices.values())),)))
         elif method == "Rescan":
             inv.return_value(None)
+        elif method in ("GetPreferences", "SetPreference", "ExportConfig", "ImportConfig"):
+            if not self.v2:
+                inv.return_dbus_error("org.freedesktop.DBus.Error.UnknownMethod", "sem " + method)
+            elif method == "GetPreferences":
+                inv.return_value(GLib.Variant("(s)", (json.dumps(self.prefs),)))
+            elif method == "SetPreference":
+                key, val = args[0], json.loads(args[1])
+                if key not in self.prefs or type(val) is not type(self.prefs[key]):
+                    inv.return_dbus_error("io.github.openmacros.Error.InvalidArgument", key)
+                    return
+                self.prefs[key] = val
+                inv.return_value(GLib.Variant("(b)", (True,)))
+                self.emit("PreferencesChanged", GLib.Variant("(s)", (json.dumps(self.prefs),)))
+            elif method == "ExportConfig":
+                inv.return_value(GLib.Variant("(s)", (json.dumps({"openmacros_export": 1, "devices": {},
+                                                                  "smart_actions": self.smart,
+                                                                  "preferences": self.prefs}),)))
+            else:
+                self.imported.append(tuple(args))
+                inv.return_value(GLib.Variant("(b)", (True,)))
+        elif method in ("SetSmartActionEnabled", "ExportSmartAction", "ImportSmartAction", "GetRunningApps"):
+            if not self.sa2:
+                inv.return_dbus_error("org.freedesktop.DBus.Error.UnknownMethod", "sem " + method)
+            else:
+                self._extra(inv, method, args)
         elif method in ("GetActiveApp", "GetRecentApps", "GetSmartActions", "SaveSmartAction",
                         "DeleteSmartAction", "RunAction", "DebugSetActiveApp"):
             self._extra(inv, method, args)
@@ -126,7 +171,7 @@ class FakeService:
                 inv.return_value(GLib.Variant("(s)", (json.dumps(dev),)))
                 return
             if not dev["online"]:
-                inv.return_dbus_error("io.github.clique.Error.DeviceOffline", "offline")
+                inv.return_dbus_error("io.github.openmacros.Error.DeviceOffline", "offline")
                 return
             if method == "SetAssignment":
                 dev["assignments"][str(args[1])] = json.loads(args[2])
@@ -157,19 +202,62 @@ def _extra(self, inv, method, args):
     elif method == "GetRecentApps":
         inv.return_value(GLib.Variant("(s)", (json.dumps(self.recent),)))
     elif method == "GetSmartActions":
-        inv.return_value(GLib.Variant("(s)", (json.dumps(self.smart),)))
+        out = {}
+        for sid, sa in self.smart.items():
+            e = dict(sa, id=sid)
+            if self.sa2:
+                e["trigger_errors"] = [{"index": i, "message": "Combinação já usada por outro programa"}
+                                       for i, t in enumerate(sa.get("triggers") or [])
+                                       if t.get("type") == "shortcut" and t.get("keys") == self.taken_shortcut]
+            out[sid] = e
+        inv.return_value(GLib.Variant("(s)", (json.dumps(out),)))
     elif method == "SaveSmartAction":
         sa = json.loads(args[0])
         sid = sa.pop("id", None) or "sa_%06x" % (len(self.smart) + 0xab12cd)
+        if self.sa2:
+            old = self.smart.get(sid, {})
+            sa.setdefault("enabled", old.get("enabled", True))
+            sa.setdefault("triggers", [])
+            sa["stats"] = old.get("stats") or {"runs": 0, "last_run": None, "created": "2026-01-01T00:00:00",
+                                               "modified": "2026-01-01T00:00:00"}
+            warnings = [f"o texto do passo {i + 1} parece conter uma senha" for i, st in enumerate(sa.get("steps") or [])
+                        if st.get("type") == "type_text" and "senha" in st.get("text", "").lower()]
         self.smart[sid] = sa
+        if self.sa2:
+            inv.return_value(GLib.Variant("(s)", (json.dumps({"id": sid, "warnings": warnings}),)))
+        else:
+            inv.return_value(GLib.Variant("(s)", (sid,)))
+        self.emit("SmartActionsChanged", None)
+    elif method == "SetSmartActionEnabled":
+        sa = self.smart.get(args[0])
+        if sa is None:
+            inv.return_dbus_error("io.github.openmacros.Error.NotFound", args[0])
+            return
+        sa["enabled"] = bool(args[1])
+        inv.return_value(GLib.Variant("(b)", (True,)))
+        self.emit("SmartActionsChanged", None)
+    elif method == "ExportSmartAction":
+        sa = self.smart.get(args[0])
+        if sa is None:
+            inv.return_dbus_error("io.github.openmacros.Error.NotFound", args[0])
+            return
+        out = {"openmacros_smart_action": 1, **{k: v for k, v in sa.items() if k != "stats"}}
+        inv.return_value(GLib.Variant("(s)", (json.dumps(out),)))
+    elif method == "ImportSmartAction":
+        data = json.loads(args[0])
+        data.pop("openmacros_smart_action", None)
+        sid = "sa_%06x" % (len(self.smart) + 0xcd34ef)
+        self.smart[sid] = data
         inv.return_value(GLib.Variant("(s)", (sid,)))
         self.emit("SmartActionsChanged", None)
+    elif method == "GetRunningApps":
+        inv.return_value(GLib.Variant("(s)", (json.dumps(self.running),)))
     elif method == "DeleteSmartAction":
         ok = self.smart.pop(args[0], None) is not None
         inv.return_value(GLib.Variant("(b)", (ok,)))
         self.emit("SmartActionsChanged", None)
     elif method == "RunAction":
-        json.loads(args[0])
+        self.ran.append(json.loads(args[0]))
         inv.return_value(GLib.Variant("(b)", (True,)))
     elif method == "DebugSetActiveApp":
         app = {"app_id": args[0], "wm_class": [args[0]], "title": args[0], "pid": 99, "exe": args[0]}
@@ -210,7 +298,7 @@ def _profile(self, inv, method, args):
                 prof["settings"][args[2]] = value if isinstance(value, dict) else {"value": value}
     elif method == "RemoveProfile":
         if profiles.pop(app, None) is None:
-            inv.return_dbus_error("io.github.clique.Error.NotFound", app)
+            inv.return_dbus_error("io.github.openmacros.Error.NotFound", app)
             return
     dev["active_profile"] = _profile_active(dev, self.active_app["app_id"])
     inv.return_value(GLib.Variant("(b)", (True,)))

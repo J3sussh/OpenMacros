@@ -1,9 +1,17 @@
+import os
+
+# Sem barramento de acessibilidade (AT-SPI) nos testes: evita o aviso/falha
+# intermitente "SpiRegistry" quando a sessão D-Bus privada não tem a11y bus.
+# Definido antes de qualquer import de GTK e herdado pelos subprocessos.
+os.environ.setdefault("NO_AT_BRIDGE", "1")
+os.environ.setdefault("GTK_A11Y", "none")
+
 import pytest
 
-from clique.hidpp.channel import Channel
-from clique.hidpp.device import Device
-from clique.hidpp.fake import SimulatedDevice
-from clique.hidpp.transport import FakeTransport
+from openmacros.hidpp.channel import Channel
+from openmacros.hidpp.device import Device
+from openmacros.hidpp.fake import SimulatedDevice
+from openmacros.hidpp.transport import FakeTransport
 
 
 @pytest.fixture

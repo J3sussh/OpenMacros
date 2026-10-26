@@ -1,0 +1,22 @@
+[Unit]
+Description=OpenMacros+ - serviço de configuração de dispositivos Logitech
+# Sem PartOf/After=graphical-session.target: no XFCE esse alvo nunca fica ativo. O serviço sobe com
+# default.target e tolera ficar sem DISPLAY no início; o autostart io.github.openmacros.Session.desktop
+# importa DISPLAY/XAUTHORITY para o systemd --user e reinicia o serviço no login gráfico.
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/openmacrosd
+Restart=on-failure
+RestartSec=2
+# 73 = nome D-Bus já tomado por outra instância: não reiniciar em loop
+RestartPreventExitStatus=73
+NoNewPrivileges=yes
+# Sem PrivateTmp: python-xlib (foco do aplicativo) e as ferramentas de clipboard conectam ao X em
+# /tmp/.X11-unix, que um /tmp privado esconderia.
+# (só opções via seccomp: não dependem de user namespaces no gerenciador de usuário)
+RestrictRealtime=yes
+LockPersonality=yes
+
+[Install]
+WantedBy=default.target

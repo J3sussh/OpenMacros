@@ -10,19 +10,19 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import GLib  # noqa: E402
 
-from clique.gui.app import CliqueApp  # noqa: E402
-from clique.gui.window import CliqueWindow  # noqa: E402
+from openmacros.gui.app import OpenMacrosApp  # noqa: E402
+from openmacros.gui.window import OpenMacrosWindow  # noqa: E402
 from fake_service import FakeService  # noqa: E402
 
 out = sys.argv[1] if len(sys.argv) > 1 else None
 service = FakeService()
-app = CliqueApp()
+app = OpenMacrosApp()
 state = {}
 
 
 def shot(name):
     if out:
-        subprocess.run(["import", "-window", "root", f"{out}/clique-{name}.png"], check=False)
+        subprocess.run(["import", "-window", "root", f"{out}/openmacros-{name}.png"], check=False)
     return False
 
 

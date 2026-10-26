@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=OpenMacros+ (sessão)
+Comment=Entrega o ambiente gráfico (DISPLAY/XAUTHORITY) ao serviço openmacrosd do systemd --user
+Exec=sh -c "systemctl --user import-environment DISPLAY XAUTHORITY WAYLAND_DISPLAY XDG_SESSION_TYPE; systemctl --user is-enabled --quiet openmacrosd.service && systemctl --user restart openmacrosd.service"
+Icon=io.github.openmacros.App
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true

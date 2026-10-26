@@ -1,15 +1,15 @@
-"""Executado dentro do dbus-run-session: sobe o serviço falso e exercita o CliqueClient."""
+"""Executado dentro do dbus-run-session: sobe o serviço falso e exercita o OpenMacrosClient."""
 
 import json
 import sys
 
 from gi.repository import GLib
 
-from clique.gui.dbus_client import CliqueClient
+from openmacros.gui.dbus_client import OpenMacrosClient
 from fake_service import FakeService
 
 loop = GLib.MainLoop()
-client = CliqueClient()
+client = OpenMacrosClient()
 log = {"signals": []}
 fail = []
 
@@ -83,8 +83,10 @@ def step_rm2(ok, err):
     client.save_smart_action({"name": "T", "icon": "x", "steps": [{"type": "delay", "ms": 100}]}, step_sa1)
 
 
-def step_sa1(sid, err):
-    check(sid and err is None, f"save_smart_action {sid} {err}")
+def step_sa1(res, err):
+    check(res and err is None, f"save_smart_action {res} {err}")
+    sid, warnings = res
+    check(sid and warnings == [], f"save_smart_action id/warnings {res}")
     log["sid"] = sid
     client.get_smart_actions(step_sa2)
 
@@ -96,7 +98,29 @@ def step_sa2(sas, err):
 
 def step_run(ok, err):
     check(ok is True, f"run_action {err}")
-    client.delete_smart_action(log["sid"], step_del)
+    client.set_smart_action_enabled(log["sid"], False, step_en)
+
+
+def step_en(ok, err):
+    check(ok is True, f"set_smart_action_enabled {ok} {err}")
+    client.export_smart_action(log["sid"], step_exp)
+
+
+def step_exp(text, err):
+    import json as _j
+    check(err is None and _j.loads(text).get("openmacros_smart_action") == 1, f"export_smart_action {text} {err}")
+    client.import_smart_action(text, step_imp)
+
+
+def step_imp(sid, err):
+    check(err is None and sid and sid != log["sid"], f"import_smart_action {sid} {err}")
+    log["imported"] = sid
+    client.get_running_apps(step_running)
+
+
+def step_running(apps, err):
+    check(apps and apps[0]["app_id"] == "firefox", f"running apps {apps} {err}")
+    client.delete_smart_action(log["imported"], lambda ok, e: client.delete_smart_action(log["sid"], step_del))
 
 
 def step_del(ok, err):
@@ -113,7 +137,7 @@ def step_active(app, err):
     check(app is not None and "app_id" in app, f"active {app}")
     from gi.repository import Gio
     Gio.bus_get_sync(Gio.BusType.SESSION).call(
-        "io.github.clique", "/io/github/clique", "io.github.clique.Manager1", "DebugSetActiveApp",
+        "io.github.openmacros", "/io/github/openmacros", "io.github.openmacros.Manager1", "DebugSetActiveApp",
         GLib.Variant("(s)", ("firefox",)), None, Gio.DBusCallFlags.NONE, 3000, None, None)
     GLib.timeout_add(500, finish)
 

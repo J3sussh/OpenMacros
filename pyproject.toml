@@ -3,27 +3,57 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "clique"
+name = "openmacros-plus"
 version = "0.1.0"
-description = "Configurador open source para mouses e teclados Logitech HID++ 2.0 no Linux"
+description = "Open-source configurator for Logitech HID++ 2.0 mice and keyboards on Linux"
 readme = "README.md"
 requires-python = ">=3.12"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
+keywords = ["logitech", "hidpp", "mouse", "keyboard", "linux", "gtk", "macros"]
+# No "License ::" classifier: PEP 639 (setuptools>=77) rejects it alongside the SPDX `license` expression (GPL-3.0-or-later).
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: X11 Applications :: GTK",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+    "Topic :: Desktop Environment",
+]
 dependencies = ["PyGObject", "evdev"]
+
+[project.urls]
+Homepage = "https://github.com/<user>/openmacros-plus"
+Repository = "https://github.com/<user>/openmacros-plus"
+Issues = "https://github.com/<user>/openmacros-plus/issues"
+Changelog = "https://github.com/<user>/openmacros-plus/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 hotplug = ["pyudev"]
+x11 = ["python-xlib"]   # foco do app, atalhos globais (XGrabKey), gatilhos de aplicativo e ações de janela
 test = ["pytest"]
 
 [project.scripts]
-cliqued = "clique.daemon.main:main"
+openmacrosd = "openmacros.daemon.main:main"
 
 [project.gui-scripts]
-clique = "clique.gui.app:main"
+openmacros = "openmacros.gui.app:main"
+openmacros-tray = "openmacros.tray.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"openmacros.gui" = ["data/*.css", "data/*.json", "data/art/*", "data/layouts/*"]
+
+[tool.setuptools.data-files]
+"share/icons/hicolor/scalable/apps" = ["data/icons/io.github.openmacros.App.svg"]
+"share/applications" = ["data/io.github.openmacros.App.desktop"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

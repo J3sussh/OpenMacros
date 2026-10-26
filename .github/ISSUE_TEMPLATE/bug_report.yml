@@ -1,0 +1,63 @@
+name: Bug report
+description: Something does not work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. For security problems, do not use this form: see SECURITY.md.
+        Remove serial numbers and the device `id` (`logi:...`) from anything you paste.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: OpenMacros+ version or commit
+      placeholder: "0.1.0 or git commit hash"
+    validations:
+      required: true
+  - type: input
+    id: distro
+    attributes:
+      label: Distribution and desktop
+      placeholder: "Kali, XFCE 4.20"
+    validations:
+      required: true
+  - type: dropdown
+    id: session
+    attributes:
+      label: Session type
+      options: [X11, Wayland, Not sure]
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and connection
+      placeholder: "M720 Triathlon, Bluetooth"
+  - type: textarea
+    id: getdevices
+    attributes:
+      label: GetDevices output
+      description: "Output of: busctl --user call io.github.openmacros /io/github/openmacros io.github.openmacros.Manager1 GetDevices"
+      render: json
+  - type: textarea
+    id: logs
+    attributes:
+      label: Service logs
+      description: "Output of: systemctl --user status openmacrosd and journalctl --user -u openmacrosd -b --no-pager | tail -n 200"
+      render: text

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=OpenMacros+ (bandeja)
+Comment=Ícone de bandeja do OpenMacros+: bateria, perfil ativo e Easy-Switch
+Exec=openmacros-tray
+Icon=io.github.openmacros.App
+Terminal=false
+NoDisplay=true
+Categories=Settings;HardwareSettings;GTK;
+X-GNOME-Autostart-enabled=true

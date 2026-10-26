@@ -1,6 +1,6 @@
 import pytest
 
-from clique.hidpp import messages as m
+from openmacros.hidpp import messages as m
 
 
 def test_encode_v2_long_by_default():

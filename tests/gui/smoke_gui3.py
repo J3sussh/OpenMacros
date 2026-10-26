@@ -1,4 +1,4 @@
-"""Smoke v3 (integrações): GUI + serviço (fake próprio ou daemon real com CLIQUE_FAKE=1) e screenshots.
+"""Smoke v3 (integrações): GUI + serviço (fake próprio ou daemon real com OPENMACROS_FAKE=1) e screenshots.
 Uso (xvfb-run + dbus-run-session, XDG_DATA_HOME isolado):
   python tests/gui/smoke_gui3.py OUT_DIR own|daemon [ARQUIVO_DEPOTS]"""
 
@@ -17,28 +17,28 @@ out, mode = sys.argv[1], sys.argv[2]
 depots = sys.argv[3] if len(sys.argv) > 3 else None
 tag = "v3" if mode == "own" else "v3d"
 
-from clique import vendor_assets as va  # noqa: E402
-from clique.gui import logic  # noqa: E402
+from openmacros import vendor_assets as va  # noqa: E402
+from openmacros.gui import logic  # noqa: E402
 
 if depots:
     va.import_assets(depots, ["405e", "b015"])
 
 daemon = None
 if mode == "daemon":
-    daemon = subprocess.Popen([sys.executable, "-m", "clique.daemon.main"], env={**os.environ, "CLIQUE_FAKE": "1"})
+    daemon = subprocess.Popen([sys.executable, "-m", "openmacros.daemon.main"], env={**os.environ, "OPENMACROS_FAKE": "1"})
     time.sleep(2.5)
 else:
     from fake_service import FakeService
     service = FakeService()
 
-from clique.gui.app import CliqueApp  # noqa: E402
+from openmacros.gui.app import OpenMacrosApp  # noqa: E402
 
-app = CliqueApp()
+app = OpenMacrosApp()
 bus = Gio.bus_get_sync(Gio.BusType.SESSION)
 
 
 def shot(name):
-    subprocess.run(["import", "-window", "root", f"{out}/clique-{tag}-{name}.png"], check=False)
+    subprocess.run(["import", "-window", "root", f"{out}/openmacros-{tag}-{name}.png"], check=False)
     return False
 
 
@@ -61,7 +61,7 @@ def open_dev():
 
 
 def debug_app(app_id):
-    bus.call("io.github.clique", "/io/github/clique", "io.github.clique.Manager1", "DebugSetActiveApp",
+    bus.call("io.github.openmacros", "/io/github/openmacros", "io.github.openmacros.Manager1", "DebugSetActiveApp",
              GLib.Variant("(s)", (app_id,)), None, Gio.DBusCallFlags.NONE, 3000, None, None)
     return False
 
@@ -127,7 +127,7 @@ def pop():
 
 
 def picker():
-    from clique.gui.widgets.app_picker import AppPickerDialog
+    from openmacros.gui.widgets.app_picker import AppPickerDialog
     AppPickerDialog(win().ctx, lambda e: None).present(win())
     return False
 

@@ -1,0 +1,102 @@
+/* OpenMacros+ — estilos próprios. As cores vêm de palette_css() (claro/escuro). */
+window, .background { font-family: "Inter", "Cantarell", sans-serif; }
+headerbar.flat, .home-page headerbar, .device-page headerbar { background: transparent; box-shadow: none; }
+.app-title { font-weight: 800; letter-spacing: 0.3em; font-size: 0.85em; opacity: 0.75; }
+.device-title { font-weight: 700; letter-spacing: 0.12em; font-size: 0.95em; }
+.battery-pill { opacity: 0.8; padding: 0 6px; }
+
+/* home */
+.device-tile { padding: 16px 20px; border-radius: 20px; background: transparent; transition: background 150ms, opacity 150ms; }
+.device-tile:hover { background: alpha(@window_fg_color, 0.05); }
+.device-tile.offline { opacity: 0.45; }
+.tile-name { font-weight: 700; letter-spacing: 0.14em; font-size: 0.85em; opacity: 0.85; }
+.tile-battery { opacity: 0.7; }
+.outline-pill { padding: 10px 28px; border-radius: 999px; border: 1.5px solid alpha(@window_fg_color, 0.55);
+  background: transparent; font-weight: 700; letter-spacing: 0.12em; font-size: 0.85em; transition: all 150ms; }
+.outline-pill:hover { background: @accent_bg_color; border-color: @accent_bg_color; color: white; }
+
+/* abas */
+.tab-bar { padding: 2px 12px 0 12px; }
+.tab-bar .tab { background: none; box-shadow: none; border-radius: 0; padding: 10px 4px 8px 4px; margin: 0;
+  font-weight: 700; letter-spacing: 0.1em; font-size: 0.82em; opacity: 0.6; border-bottom: 3px solid transparent;
+  transition: opacity 150ms, border-color 150ms; }
+.tab-bar .tab:hover { opacity: 0.9; }
+.tab-bar .tab:checked { opacity: 1; color: @accent_color; border-bottom-color: @accent_bg_color; background: none; }
+
+/* cartões */
+.openmacros-card { background: @card_bg_color; color: @card_fg_color; border-radius: 12px; padding: 18px 20px;
+  box-shadow: 0 1px 3px alpha(black, 0.12), 0 4px 14px alpha(black, 0.06); }
+.card-title { font-weight: 700; font-size: 1.05em; }
+.page-title { font-weight: 800; font-size: 1.5em; }
+.section-title { font-weight: 700; font-size: 0.72em; letter-spacing: 0.12em; opacity: 0.6; }
+.plain-list, .plain-list row { background: transparent; }
+.big-scale trough { min-height: 8px; border-radius: 999px; }
+.big-scale highlight { background: @accent_bg_color; border-radius: 999px; }
+.big-scale slider { min-width: 24px; min-height: 24px; }
+.channel { padding: 14px 18px; border: 2px solid transparent; transition: border-color 200ms; }
+.channel.current { border-color: @accent_bg_color; }
+.channel-number { border-radius: 999px; background: alpha(@accent_bg_color, 0.15); color: @accent_color; font-weight: 800; }
+.chip { background: alpha(@accent_bg_color, 0.16); color: @accent_color; border-radius: 999px; padding: 3px 12px; font-weight: 700; font-size: 0.8em; }
+.pill-small { border-radius: 999px; padding: 4px 16px; }
+
+/* hotspots */
+.hotspot { padding: 0; min-width: 20px; min-height: 20px; border-radius: 999px; border: 2px solid white;
+  background: #12b9f0; box-shadow: 0 0 0 5px alpha(#12b9f0, 0.30), 0 1px 4px alpha(black, 0.4);
+  transition: box-shadow 160ms, background 160ms; }
+.hotspot-box.hover .hotspot { box-shadow: 0 0 0 9px alpha(#12b9f0, 0.40), 0 1px 4px alpha(black, 0.4); }
+.hotspot-box.selected .hotspot { background: white; border-color: #12b9f0; box-shadow: 0 0 0 9px alpha(#12b9f0, 0.45); }
+.hotspot-line { background: alpha(#12b9f0, 0.9); min-width: 1px; min-height: 1px; }
+.hotspot-label { background: @card_bg_color; color: @card_fg_color; border-radius: 10px; padding: 5px 12px; min-height: 0;
+  box-shadow: 0 1px 4px alpha(black, 0.25); border: 1.5px solid transparent; transition: border-color 160ms; }
+.hotspot-box.hover .hotspot-label { border-color: #12b9f0; }
+.hotspot-box.selected .hotspot-label { border-color: #12b9f0; }
+.hotspot-name { font-size: 0.72em; letter-spacing: 0.06em; opacity: 0.6; font-weight: 600; }
+.hotspot-action { font-weight: 700; font-size: 0.92em; }
+
+/* painel lateral */
+.action-panel { background: @card_bg_color; border-radius: 16px 0 0 16px; margin: 8px 0 8px 0;
+  box-shadow: -2px 0 18px alpha(black, 0.12); }
+.panel-title { font-weight: 800; font-size: 1.15em; }
+.action-list { background: transparent; }
+.action-list row { background: transparent; padding: 0; border-radius: 8px; min-height: 38px; }
+.action-list row.action-row { padding: 9px 10px; }
+.action-list row.action-row:hover { background: alpha(@window_fg_color, 0.06); }
+.action-list row.action-row.selected { font-weight: 700; color: @accent_color; }
+.action-check { color: @accent_color; transition: opacity 150ms; }
+.gesture-cell { border-radius: 12px; background: alpha(@window_fg_color, 0.06); padding: 4px 6px; border: 2px solid transparent; }
+.gesture-cell.selected { border-color: @accent_bg_color; background: alpha(@accent_bg_color, 0.14); }
+.gesture-title { font-size: 0.62em; letter-spacing: 0.1em; font-weight: 700; opacity: 0.6; }
+.gesture-action { font-size: 0.78em; font-weight: 700; }
+.value-label { font-weight: 700; }
+
+/* v3: perfis por aplicativo, Smart Actions */
+.profile-indicator { font-size: 0.72em; letter-spacing: 0.04em; opacity: 0.6; }
+.profile-indicator.active { opacity: 1; color: @accent_color; font-weight: 700; }
+.profile-bar { padding-top: 2px; }
+.profile-chip { border-radius: 999px; padding: 5px 14px; background: alpha(@window_fg_color, 0.07); border: 1.5px solid transparent;
+  box-shadow: none; font-weight: 600; font-size: 0.9em; transition: all 150ms; }
+.profile-chip:hover { background: alpha(@window_fg_color, 0.12); }
+.profile-chip:checked { background: alpha(@accent_bg_color, 0.16); border-color: @accent_bg_color; color: @accent_color; }
+.chip-holder { border-radius: 999px; }
+.profile-add { min-width: 30px; min-height: 30px; padding: 0; background: alpha(@window_fg_color, 0.07); box-shadow: none; }
+.hotspot-box.inherited .hotspot-action, .hotspot-box.inherited .hotspot-name { opacity: 0.5; }
+.hotspot-box.inherited .hotspot { background: alpha(#12b9f0, 0.65); }
+.hotspot-inherit { font-size: 0.68em; opacity: 0.65; font-style: italic; }
+.chip.over { background: alpha(#e5a50a, 0.2); color: @window_fg_color; }
+.test-btn { opacity: 0.45; min-width: 26px; min-height: 26px; padding: 0; }
+.action-row:hover .test-btn, .test-btn:hover { opacity: 1; }
+.openmacros-text-frame { border-radius: 8px; background: alpha(@window_fg_color, 0.06); }
+.openmacros-text, .openmacros-text text { background: transparent; }
+.sa-icon { color: @accent_color; }
+.steps-list, .steps-list row { background: transparent; }
+.step-row { border-radius: 10px; }
+.step-row:hover { background: alpha(@window_fg_color, 0.05); }
+.step-num { font-weight: 800; opacity: 0.45; }
+.drag-handle { opacity: 0.45; }
+.icon-choice { border-radius: 10px; padding: 6px; }
+.icon-choice:checked { background: alpha(@accent_bg_color, 0.2); color: @accent_color; }
+.action-list row.editor-row { min-height: 0; padding: 0; }
+.action-list row.editor-row:hover { background: transparent; }
+
+/* Smart Actions v2 */
+.sa-card.sa-off .card-title, .sa-card.sa-off .sa-icon { opacity: 0.55; }

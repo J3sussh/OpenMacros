@@ -1,4 +1,4 @@
-from clique.daemon import profiles as p
+from openmacros.daemon import profiles as p
 
 KEYS_A = {"type": "keys", "keys": ["KEY_A"]}
 KEYS_B = {"type": "keys", "keys": ["KEY_B"]}

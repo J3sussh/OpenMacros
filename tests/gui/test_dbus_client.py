@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from clique.gui.dbus_client import parse_device, parse_devices
+from openmacros.gui.dbus_client import parse_device, parse_devices
 
 HERE = Path(__file__).resolve().parent
 

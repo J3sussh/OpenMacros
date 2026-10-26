@@ -1,4 +1,4 @@
-from clique.hidpp.transport import FakeTransport, enumerate_hidraw
+from openmacros.hidpp.transport import FakeTransport, enumerate_hidraw
 
 
 def _node(root, name, hid_id, desc):

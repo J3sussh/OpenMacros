@@ -1,6 +1,6 @@
 import pytest
 
-from clique.gui import logic
+from openmacros.gui import logic
 
 
 def test_accel_to_evdev():
@@ -98,7 +98,7 @@ def test_resolve_layout_and_tabs():
 
 
 def test_friendly_error():
-    msg = "GDBus.Error:io.github.clique.Error.DeviceOffline: sem resposta"
+    msg = "GDBus.Error:io.github.openmacros.Error.DeviceOffline: sem resposta"
     assert logic.friendly_error(msg) == "O dispositivo está offline: sem resposta"
     assert logic.friendly_error("outra coisa") == "outra coisa"
 
@@ -136,7 +136,7 @@ def test_gesture_helpers():
 def test_vendor_art_preferred(monkeypatch, tmp_path):
     import json
     monkeypatch.setenv("XDG_DATA_HOME", str(tmp_path))
-    d = tmp_path / "clique" / "vendor" / "405e"
+    d = tmp_path / "openmacros" / "vendor" / "405e"
     d.mkdir(parents=True)
     (d / "front.webp").write_bytes(b"x")
     (d / "side.webp").write_bytes(b"x")
@@ -322,13 +322,13 @@ def test_smart_action_validation():
 
 
 def test_smart_templates_and_moves():
-    assert {t["id"] for t in logic.SMART_TEMPLATES} >= {"focus", "research", "pentest"}
+    assert len(logic.SMART_TEMPLATES) == 10 and "pentest" in {t["id"] for t in logic.SMART_TEMPLATES}
     for t in logic.SMART_TEMPLATES:
         sa = logic.smart_from_template(t["id"])
         logic.validate_smart_action(sa)
         sa["steps"].append({"type": "delay", "ms": 100})  # cópia editável: não altera o modelo
         assert len(logic.smart_from_template(t["id"])["steps"]) == len(t["steps"])
-    assert sum(1 for s in logic.smart_from_template("research")["steps"] if s["type"] == "open") == 3
+    assert sum(1 for s in logic.smart_from_template("pentest")["steps"] if s["type"] == "open") == 2
     with pytest.raises(ValueError):
         logic.smart_from_template("nao-existe")
     assert logic.move_step([1, 2, 3], 0, 2) == [2, 3, 1]

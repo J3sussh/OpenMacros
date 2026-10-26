@@ -1,8 +1,8 @@
 import os
 
-from clique.daemon import dbus_service as ds
-from clique.daemon.config import Config
-from clique.daemon.manager import Manager
+from openmacros.daemon import dbus_service as ds
+from openmacros.daemon.config import Config
+from openmacros.daemon.manager import Manager
 
 
 def make(monkeypatch, uid, pid=123, sandboxed=False, fail=False):

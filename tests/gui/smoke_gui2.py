@@ -1,4 +1,4 @@
-"""Smoke v2 com display: daemon fake real (CLIQUE_FAKE=1) + GUI; percorre telas e tira screenshots.
+"""Smoke v2 com display: daemon fake real (OPENMACROS_FAKE=1) + GUI; percorre telas e tira screenshots.
 Uso (dentro de xvfb-run + dbus-run-session, com XDG_DATA_HOME isolado):
   python tests/gui/smoke_gui2.py OUT_DIR vendor|svg [ARQUIVO_DEPOTS]"""
 
@@ -18,23 +18,23 @@ out, mode = sys.argv[1], sys.argv[2]
 depots = sys.argv[3] if len(sys.argv) > 3 else None
 tag = "v2" if mode == "vendor" else "v2svg"
 
-from clique import vendor_assets as va  # noqa: E402
+from openmacros import vendor_assets as va  # noqa: E402
 
 if mode == "vendor":
     res = va.import_assets(depots, ["405e", "b015"])
     print("importado:", res.imported, res.missing, flush=True)
 
-daemon = subprocess.Popen([sys.executable, "-m", "clique.daemon.main"], env={**os.environ, "CLIQUE_FAKE": "1"})
+daemon = subprocess.Popen([sys.executable, "-m", "openmacros.daemon.main"], env={**os.environ, "OPENMACROS_FAKE": "1"})
 time.sleep(2.5)
 
-from clique.gui.app import CliqueApp  # noqa: E402
+from openmacros.gui.app import OpenMacrosApp  # noqa: E402
 
-app = CliqueApp()
+app = OpenMacrosApp()
 M720 = None
 
 
 def shot(name):
-    subprocess.run(["import", "-window", "root", f"{out}/clique-{tag}-{name}.png"], check=False)
+    subprocess.run(["import", "-window", "root", f"{out}/openmacros-{tag}-{name}.png"], check=False)
     return False
 
 
@@ -61,7 +61,7 @@ def hot(cid):
 
 def gestures():
     bp = win().device_page.stack.get_child_by_name("buttons")
-    bp.panel._on_list_action(__import__("clique.gui.logic", fromlist=["x"]).build_action("gestures"))
+    bp.panel._on_list_action(__import__("openmacros.gui.logic", fromlist=["x"]).build_action("gestures"))
     return False
 
 
