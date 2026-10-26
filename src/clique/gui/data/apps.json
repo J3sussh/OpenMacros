@@ -1,0 +1,582 @@
+{
+ "version": 1,
+ "comment": "Catálogo próprio do Clique: sugestões são aplicadas só quando o usuário pede.",
+ "suggestion_sets": {
+  "browser": {
+   "label": "Navegador",
+   "assignments": {
+    "91": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTCTRL",
+      "KEY_PAGEUP"
+     ]
+    },
+    "93": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTCTRL",
+      "KEY_PAGEDOWN"
+     ]
+    },
+    "208": {
+     "type": "gestures",
+     "click": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTCTRL",
+       "KEY_LEFTSHIFT",
+       "KEY_T"
+      ]
+     },
+     "up": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTCTRL",
+       "KEY_T"
+      ]
+     },
+     "down": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTCTRL",
+       "KEY_W"
+      ]
+     },
+     "left": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTALT",
+       "KEY_LEFT"
+      ]
+     },
+     "right": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTALT",
+       "KEY_RIGHT"
+      ]
+     },
+     "threshold": 50
+    }
+   }
+  },
+  "editor": {
+   "label": "Editor de código",
+   "assignments": {
+    "83": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTCTRL",
+      "KEY_LEFTALT",
+      "KEY_MINUS"
+     ]
+    },
+    "86": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTCTRL",
+      "KEY_LEFTSHIFT",
+      "KEY_MINUS"
+     ]
+    },
+    "208": {
+     "type": "gestures",
+     "click": {
+      "type": "keys",
+      "keys": [
+       "KEY_F12"
+      ]
+     },
+     "up": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTCTRL",
+       "KEY_LEFTSHIFT",
+       "KEY_P"
+      ]
+     },
+     "down": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTCTRL",
+       "KEY_GRAVE"
+      ]
+     },
+     "left": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTCTRL",
+       "KEY_PAGEUP"
+      ]
+     },
+     "right": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTCTRL",
+       "KEY_PAGEDOWN"
+      ]
+     },
+     "threshold": 50
+    }
+   }
+  },
+  "terminal": {
+   "label": "Terminal",
+   "assignments": {
+    "82": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTSHIFT",
+      "KEY_INSERT"
+     ]
+    },
+    "83": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTCTRL",
+      "KEY_PAGEUP"
+     ]
+    },
+    "86": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTCTRL",
+      "KEY_PAGEDOWN"
+     ]
+    },
+    "208": {
+     "type": "gestures",
+     "click": {
+      "type": "default"
+     },
+     "up": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTCTRL",
+       "KEY_LEFTSHIFT",
+       "KEY_T"
+      ]
+     },
+     "down": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTCTRL",
+       "KEY_LEFTSHIFT",
+       "KEY_W"
+      ]
+     },
+     "left": {
+      "type": "default"
+     },
+     "right": {
+      "type": "default"
+     },
+     "threshold": 50
+    }
+   }
+  },
+  "burp": {
+   "label": "Burp Suite",
+   "assignments": {
+    "86": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTCTRL",
+      "KEY_R"
+     ]
+    },
+    "83": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTCTRL",
+      "KEY_I"
+     ]
+    },
+    "208": {
+     "type": "gestures",
+     "click": {
+      "type": "default"
+     },
+     "up": {
+      "type": "keys",
+      "keys": [
+       "KEY_LEFTCTRL",
+       "KEY_SPACE"
+      ]
+     },
+     "down": {
+      "type": "default"
+     },
+     "left": {
+      "type": "default"
+     },
+     "right": {
+      "type": "default"
+     },
+     "threshold": 50
+    }
+   }
+  },
+  "analysis": {
+   "label": "Análise de tráfego",
+   "assignments": {
+    "83": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTALT",
+      "KEY_LEFT"
+     ]
+    },
+    "86": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTALT",
+      "KEY_RIGHT"
+     ]
+    }
+   }
+  },
+  "player": {
+   "label": "Player de mídia",
+   "assignments": {
+    "82": {
+     "type": "media",
+     "op": "play_pause"
+    },
+    "91": {
+     "type": "media",
+     "op": "previous"
+    },
+    "93": {
+     "type": "media",
+     "op": "next"
+    }
+   }
+  },
+  "spotify": {
+   "label": "Spotify",
+   "assignments": {
+    "82": {
+     "type": "media",
+     "op": "play_pause",
+     "player": "spotify"
+    },
+    "91": {
+     "type": "media",
+     "op": "previous",
+     "player": "spotify"
+    },
+    "93": {
+     "type": "media",
+     "op": "next",
+     "player": "spotify"
+    }
+   }
+  },
+  "notes": {
+   "label": "Notas",
+   "assignments": {
+    "83": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTCTRL",
+      "KEY_LEFTALT",
+      "KEY_LEFT"
+     ]
+    },
+    "86": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTCTRL",
+      "KEY_LEFTALT",
+      "KEY_RIGHT"
+     ]
+    }
+   }
+  },
+  "calc": {
+   "label": "Planilha",
+   "assignments": {
+    "91": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTALT",
+      "KEY_PAGEUP"
+     ]
+    },
+    "93": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTALT",
+      "KEY_PAGEDOWN"
+     ]
+    }
+   }
+  },
+  "chat": {
+   "label": "Comunicação",
+   "assignments": {
+    "83": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTALT",
+      "KEY_LEFT"
+     ]
+    },
+    "86": {
+     "type": "keys",
+     "keys": [
+      "KEY_LEFTALT",
+      "KEY_RIGHT"
+     ]
+    }
+   }
+  }
+ },
+ "apps": {
+  "firefox": {
+   "name": "Firefox",
+   "group": "Navegador",
+   "suggestions": "browser",
+   "desktop": [
+    "firefox.desktop",
+    "firefox-esr.desktop"
+   ],
+   "aliases": [
+    "navigator"
+   ]
+  },
+  "firefox-esr": {
+   "name": "Firefox ESR",
+   "group": "Navegador",
+   "suggestions": "browser",
+   "desktop": [
+    "firefox-esr.desktop"
+   ],
+   "aliases": []
+  },
+  "chromium": {
+   "name": "Chromium",
+   "group": "Navegador",
+   "suggestions": "browser",
+   "desktop": [
+    "chromium.desktop"
+   ],
+   "aliases": []
+  },
+  "google-chrome": {
+   "name": "Google Chrome",
+   "group": "Navegador",
+   "suggestions": "browser",
+   "desktop": [
+    "google-chrome.desktop"
+   ],
+   "aliases": []
+  },
+  "brave-browser": {
+   "name": "Brave",
+   "group": "Navegador",
+   "suggestions": "browser",
+   "desktop": [
+    "brave-browser.desktop"
+   ],
+   "aliases": []
+  },
+  "code": {
+   "name": "Visual Studio Code",
+   "group": "Editor",
+   "suggestions": "editor",
+   "desktop": [
+    "code.desktop"
+   ],
+   "aliases": [
+    "visual studio code"
+   ]
+  },
+  "codium": {
+   "name": "VSCodium",
+   "group": "Editor",
+   "suggestions": "editor",
+   "desktop": [
+    "codium.desktop"
+   ],
+   "aliases": []
+  },
+  "xfce4-terminal": {
+   "name": "Terminal Xfce",
+   "group": "Terminal",
+   "suggestions": "terminal",
+   "desktop": [
+    "xfce4-terminal.desktop"
+   ],
+   "aliases": []
+  },
+  "qterminal": {
+   "name": "QTerminal",
+   "group": "Terminal",
+   "suggestions": "terminal",
+   "desktop": [
+    "qterminal.desktop"
+   ],
+   "aliases": []
+  },
+  "gnome-terminal-server": {
+   "name": "Terminal GNOME",
+   "group": "Terminal",
+   "suggestions": "terminal",
+   "desktop": [
+    "org.gnome.Terminal.desktop"
+   ],
+   "aliases": []
+  },
+  "kitty": {
+   "name": "kitty",
+   "group": "Terminal",
+   "suggestions": "terminal",
+   "desktop": [
+    "kitty.desktop"
+   ],
+   "aliases": []
+  },
+  "alacritty": {
+   "name": "Alacritty",
+   "group": "Terminal",
+   "suggestions": "terminal",
+   "desktop": [
+    "alacritty.desktop"
+   ],
+   "aliases": []
+  },
+  "konsole": {
+   "name": "Konsole",
+   "group": "Terminal",
+   "suggestions": "terminal",
+   "desktop": [
+    "konsole.desktop"
+   ],
+   "aliases": []
+  },
+  "terminator": {
+   "name": "Terminator",
+   "group": "Terminal",
+   "suggestions": "terminal",
+   "desktop": [
+    "terminator.desktop"
+   ],
+   "aliases": []
+  },
+  "burp-startburp": {
+   "name": "Burp Suite",
+   "group": "Pentest",
+   "suggestions": "burp",
+   "desktop": [
+    "burpsuite.desktop"
+   ],
+   "aliases": [
+    "burp suite"
+   ]
+  },
+  "wireshark": {
+   "name": "Wireshark",
+   "group": "Pentest",
+   "suggestions": "analysis",
+   "desktop": [
+    "wireshark.desktop",
+    "org.wireshark.Wireshark.desktop"
+   ],
+   "aliases": []
+  },
+  "zaproxy": {
+   "name": "OWASP ZAP",
+   "group": "Pentest",
+   "suggestions": "analysis",
+   "desktop": [
+    "zaproxy.desktop"
+   ],
+   "aliases": []
+  },
+  "spotify": {
+   "name": "Spotify",
+   "group": "Mídia",
+   "suggestions": "spotify",
+   "desktop": [
+    "spotify.desktop"
+   ],
+   "aliases": []
+  },
+  "vlc": {
+   "name": "VLC",
+   "group": "Mídia",
+   "suggestions": "player",
+   "desktop": [
+    "vlc.desktop"
+   ],
+   "aliases": []
+  },
+  "rhythmbox": {
+   "name": "Rhythmbox",
+   "group": "Mídia",
+   "suggestions": "player",
+   "desktop": [
+    "rhythmbox.desktop",
+    "org.gnome.Rhythmbox3.desktop"
+   ],
+   "aliases": []
+  },
+  "obsidian": {
+   "name": "Obsidian",
+   "group": "Produtividade",
+   "suggestions": "notes",
+   "desktop": [
+    "obsidian.desktop"
+   ],
+   "aliases": []
+  },
+  "libreoffice-writer": {
+   "name": "LibreOffice Writer",
+   "group": "Produtividade",
+   "suggestions": null,
+   "desktop": [
+    "libreoffice-writer.desktop"
+   ],
+   "aliases": []
+  },
+  "libreoffice-calc": {
+   "name": "LibreOffice Calc",
+   "group": "Produtividade",
+   "suggestions": "calc",
+   "desktop": [
+    "libreoffice-calc.desktop"
+   ],
+   "aliases": []
+  },
+  "thunderbird": {
+   "name": "Thunderbird",
+   "group": "Produtividade",
+   "suggestions": "chat",
+   "desktop": [
+    "thunderbird.desktop"
+   ],
+   "aliases": []
+  },
+  "slack": {
+   "name": "Slack",
+   "group": "Produtividade",
+   "suggestions": "chat",
+   "desktop": [
+    "slack.desktop"
+   ],
+   "aliases": []
+  },
+  "discord": {
+   "name": "Discord",
+   "group": "Produtividade",
+   "suggestions": "chat",
+   "desktop": [
+    "discord.desktop"
+   ],
+   "aliases": []
+  }
+ }
+}

@@ -1,0 +1,29 @@
+# Clique: acesso do usuário logado (uaccess) apenas ao nó hidraw que fala HID++.
+#
+# Levantamento (sysfs, somente leitura):
+#   Unifying c52b : HID++ na interface USB 02 (hidraw sem mouse/teclado, só relatórios 0x10/0x11/0x20)
+#   Nano     c534 : HID++ na interface USB 01 (compartilhada com o mouse)
+#   Bolt c548 e Lightspeed: interface 02 (documentado publicamente; não verificado nesta máquina)
+#   Bluetooth/LE (M720 b015): nó único criado via uhid, bus 0005; não há interface USB.
+# Dispositivos USB com fio (sem receptor) não são cobertos; adicione uma regra com o idProduct e
+# a bInterfaceNumber do nó HID++ se precisar.
+# Obs.: ATTRS de nível USB (idVendor/idProduct) e de interface (bInterfaceNumber) estão em pais
+# diferentes, por isso o idProduct é convertido em variável antes de casar a interface.
+
+ACTION=="remove", GOTO="clique_end"
+SUBSYSTEM!="hidraw", GOTO="clique_end"
+
+# Bluetooth (HID_ID = 0005:046D:<pid>)
+KERNELS=="0005:046D:*", MODE="0660", TAG+="uaccess", GOTO="clique_end"
+
+ATTRS{idVendor}!="046d", GOTO="clique_end"
+ATTRS{idProduct}=="c52b|c532|c548|c539|c53a|c53d|c545|c54d", ENV{CLIQUE_IFACE}="02"
+ATTRS{idProduct}=="c534|c52f", ENV{CLIQUE_IFACE}="01"
+ENV{CLIQUE_IFACE}=="02", ATTRS{bInterfaceNumber}=="02", MODE="0660", TAG+="uaccess"
+ENV{CLIQUE_IFACE}=="01", ATTRS{bInterfaceNumber}=="01", MODE="0660", TAG+="uaccess"
+
+LABEL="clique_end"
+
+# uinput para ações de teclado/mouse. O systemd (70-uaccess.rules) não cobre /dev/uinput; a regra é
+# idêntica à do Solaar (60-solaar.rules), então a duplicação é inofensiva.
+KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"

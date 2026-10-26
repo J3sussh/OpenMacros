@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clique"
+version = "0.1.0"
+description = "Configurador open source para mouses e teclados Logitech HID++ 2.0 no Linux"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+dependencies = ["PyGObject", "evdev"]
+
+[project.optional-dependencies]
+hotplug = ["pyudev"]
+test = ["pytest"]
+
+[project.scripts]
+cliqued = "clique.daemon.main:main"
+
+[project.gui-scripts]
+clique = "clique.gui.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

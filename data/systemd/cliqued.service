@@ -1,0 +1,17 @@
+[Unit]
+Description=Clique - serviço de configuração de dispositivos Logitech
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/cliqued
+Restart=on-failure
+RestartSec=2
+# 73 = nome D-Bus já tomado por outra instância: não reiniciar em loop
+RestartPreventExitStatus=73
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=graphical-session.target
