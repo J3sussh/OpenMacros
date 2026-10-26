@@ -206,8 +206,12 @@ else
 fi
 
 if [ "$SKIP_SYSTEMCTL" != 1 ]; then
-  command -v update-desktop-database >/dev/null && update-desktop-database "$APPS" 2>/dev/null || true
-  command -v gtk-update-icon-cache >/dev/null && gtk-update-icon-cache -q -t -f "$DATA/icons/hicolor" 2>/dev/null || true
+  if command -v update-desktop-database >/dev/null; then
+    update-desktop-database "$APPS" 2>/dev/null || true
+  fi
+  if command -v gtk-update-icon-cache >/dev/null; then
+    gtk-update-icon-cache -q -t -f "$DATA/icons/hicolor" 2>/dev/null || true
+  fi
 fi
 
 # --- systemd --user ---

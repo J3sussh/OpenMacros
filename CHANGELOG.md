@@ -6,18 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-### Added
-
-- Debian package (`openmacros-plus_<version>_all.deb`) built by `packaging/deb/build-deb.sh`: code, launchers, systemd user unit, udev rule, desktop, autostart, icons and AppStream metadata. Dependencies are declared, the udev rule and the service are enabled on install.
-- Release workflow: a `v*` tag runs the tests, builds the .deb and publishes it with `SHA256SUMS`; CI builds the .deb as an artifact.
-- `openmacros.paths`: icon lookup for installed layouts (`/usr/share/openmacros/icons`) as well as the repository checkout.
-
-## [0.1.0] - 2026-10-22
+## [0.1.0] - 2026-10-26
 
 First public release.
 
 ### Added
 
+- Debian package (`openmacros-plus_<version>_all.deb`) built by `packaging/deb/build-deb.sh`: code, launchers, systemd user unit, udev rule, desktop, autostart, icons and AppStream metadata. Dependencies are declared, the udev rule and the service are enabled on install.
+- Release workflow: a `v*` tag runs the tests, builds the .deb and publishes it with `SHA256SUMS`; CI builds the .deb as an artifact.
+- `openmacros.paths`: icon lookup for installed layouts (`/usr/share/openmacros/icons`) as well as the repository checkout.
 - HID++ 2.0 support over hidraw for Bluetooth and USB receivers (Unifying, Bolt, Lightspeed, Nano), with device discovery, hotplug and automatic reapply of the configuration on reconnect.
 - User service `openmacrosd`, GTK4/libadwaita GUI `openmacros`, and tray icon `openmacros-tray`, connected over the session D-Bus (`io.github.openmacros`).
 - Button remapping and gestures (click plus four directions, adjustable threshold).
