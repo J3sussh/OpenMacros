@@ -1,13 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" width="400" height="520">
-  <!-- Mouse genérico (vista superior). Desenho original do projeto OpenMacros+. -->
-  <defs>
-    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#5b616b"/>
-      <stop offset="1" stop-color="#3c4048"/>
-    </linearGradient>
-  </defs>
-  <path d="M120 150 C120 60 280 60 280 150 L292 340 C296 430 260 492 200 496 C140 492 104 430 108 340 Z" fill="url(#body)" stroke="#25282d" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M200 70 L200 240" stroke="#25282d" stroke-width="3" fill="none"/>
-  <path d="M118 240 C160 256 240 256 282 240" stroke="#25282d" stroke-width="3" fill="none"/>
-  <rect x="187" y="116" width="26" height="62" rx="13" fill="#2a2d33" stroke="#1b1d21" stroke-width="2"/>
+  <!-- Mouse genérico (ícone de linha, vista superior). Desenho original do projeto OpenMacros+. -->
+  <g fill="none" stroke="#5f6773" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M200 40 C262 40 296 92 298 160 C300 230 312 300 312 366 C312 440 270 496 200 496 C130 496 88 440 88 366 C88 300 100 230 102 160 C104 92 138 40 200 40 Z"/>
+    <path d="M200 46 L200 92 M200 166 L200 236 M100 236 C150 256 250 256 300 236"/>
+    <rect x="184" y="92" width="32" height="74" rx="16"/>
+  </g>
 </svg>
