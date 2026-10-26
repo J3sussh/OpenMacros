@@ -28,10 +28,10 @@ classifiers = [
 dependencies = ["PyGObject", "evdev"]
 
 [project.urls]
-Homepage = "https://github.com/j3sussh/openmacros-plus"
-Repository = "https://github.com/j3sussh/openmacros-plus"
-Issues = "https://github.com/j3sussh/openmacros-plus/issues"
-Changelog = "https://github.com/j3sussh/openmacros-plus/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/J3sussh/OpenMacros"
+Repository = "https://github.com/J3sussh/OpenMacros"
+Issues = "https://github.com/J3sussh/OpenMacros/issues"
+Changelog = "https://github.com/J3sussh/OpenMacros/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 hotplug = ["pyudev"]

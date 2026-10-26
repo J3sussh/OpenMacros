@@ -24,7 +24,7 @@ sudo apt install python3 python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-adw-1
   gir1.2-gtk-3.0 gir1.2-ayatanaappindicator3-0.1 \
   python3-evdev python3-pyudev python3-xlib python3-pytest \
   xvfb dbus dbus-x11 xclip
-git clone https://github.com/j3sussh/openmacros-plus.git
+git clone https://github.com/J3sussh/OpenMacros.git
 cd openmacros-plus
 ```
 

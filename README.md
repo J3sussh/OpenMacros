@@ -4,7 +4,7 @@
 
 A free, independent alternative to Logi Options+ for Linux. It configures Logitech HID++ 2.0 mice and keyboards.
 
-[![CI](https://github.com/j3sussh/openmacros-plus/actions/workflows/ci.yml/badge.svg)](https://github.com/j3sussh/openmacros-plus/actions/workflows/ci.yml)
+[![CI](https://github.com/J3sussh/OpenMacros/actions/workflows/ci.yml/badge.svg)](https://github.com/J3sussh/OpenMacros/actions/workflows/ci.yml)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](pyproject.toml)
 
@@ -72,7 +72,7 @@ sudo apt install python3 python3-gi gir1.2-gtk-4.0 gir1.2-adw-1 \
 
 ### Debian/Ubuntu/Kali (.deb)
 
-Download `openmacros-plus_<version>_all.deb` from the [Releases](https://github.com/j3sussh/openmacros-plus/releases) page and install it. `apt` pulls in the dependencies on its own:
+Download `openmacros-plus_<version>_all.deb` from the [Releases](https://github.com/J3sussh/OpenMacros/releases) page and install it. `apt` pulls in the dependencies on its own:
 
 ```sh
 sudo apt install ./openmacros-plus_<version>_all.deb
@@ -91,7 +91,7 @@ Build the package yourself with `packaging/deb/build-deb.sh` (see [CONTRIBUTING]
 User-level install, no sudo. Only the udev rule needs sudo.
 
 ```sh
-git clone https://github.com/j3sussh/openmacros-plus.git
+git clone https://github.com/J3sussh/OpenMacros.git
 cd openmacros-plus
 scripts/install.sh
 ```

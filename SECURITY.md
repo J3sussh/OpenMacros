@@ -8,7 +8,7 @@ Only the latest release receives security fixes.
 
 Report privately. Do not open a public issue.
 
-Use GitHub Security Advisories: open the repository's **Security** tab and choose **Report a vulnerability** (`https://github.com/j3sussh/openmacros-plus/security/advisories/new`).
+Use GitHub Security Advisories: open the repository's **Security** tab and choose **Report a vulnerability** (`https://github.com/J3sussh/OpenMacros/security/advisories/new`).
 
 Please include:
 
