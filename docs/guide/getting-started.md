@@ -16,7 +16,7 @@ From source instead:
 sudo apt install python3 python3-gi gir1.2-gtk-4.0 gir1.2-adw-1 \
   python3-evdev python3-pyudev python3-xlib xclip xsel \
   gir1.2-gtk-3.0 gir1.2-ayatanaappindicator3-0.1
-git clone https://github.com/<user>/openmacros-plus.git
+git clone https://github.com/j3sussh/openmacros-plus.git
 cd openmacros-plus
 scripts/install.sh
 ```

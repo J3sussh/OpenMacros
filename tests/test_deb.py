@@ -75,7 +75,7 @@ def test_control(deb):
     assert fields["Package"] == "openmacros-plus" and fields["Version"] == "9.8.7"
     assert fields["Architecture"] == "all" and fields["Section"] == "utils" and fields["Priority"] == "optional"
     assert fields["Maintainer"] == "OpenMacros+ maintainers <contact email>"
-    assert fields["Homepage"] == "https://github.com/<user>/openmacros-plus"
+    assert fields["Homepage"] == "https://github.com/j3sussh/openmacros-plus"
     deps = sh("dpkg-deb", "-f", str(deb), "Depends")
     for d in ("python3 (>= 3.12)", "python3-gi", "gir1.2-gtk-4.0", "gir1.2-adw-1 (>= 1.5)", "gir1.2-gtk-3.0",
               "gir1.2-ayatanaappindicator3-0.1", "python3-evdev", "python3-pyudev", "python3-xlib", "xclip | xsel"):

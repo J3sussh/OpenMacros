@@ -43,5 +43,5 @@ First public release.
 - The interface is in Brazilian Portuguese only.
 - Only the M720 Triathlon is tested on real hardware.
 
-[Unreleased]: https://github.com/<user>/openmacros-plus/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/<user>/openmacros-plus/releases/tag/v0.1.0
+[Unreleased]: https://github.com/j3sussh/openmacros-plus/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/j3sussh/openmacros-plus/releases/tag/v0.1.0
