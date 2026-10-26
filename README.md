@@ -36,14 +36,14 @@ A free, independent alternative to Logi Options+ for Linux. It configures Logite
   - system: lock, screenshot, suspend, show desktop, mute microphone, Do Not Disturb (XFCE only), empty trash.
 - **Smart Actions.** "If... Then..." automations. Triggers: a device button, a global keyboard shortcut, an app opening/closing/gaining focus, a device connecting/disconnecting. Up to 5 triggers and 32 steps (actions and delays). Ready-made templates, key recorder, export and import.
 - **Point and scroll.** Pointer speed, DPI, hi-res scrolling, scroll inversion and SmartShift, where the device supports them. Can be overridden per app.
-- **Easy-Switch.** Change channel from the window or from the tray.
+- **Easy-Switch.** Change channel from the window or from the tray. The channel in use is labeled with this computer's name; the device does not report the names of the other channels.
 - **Tray icon with battery.** Icon by lowest battery level, menu with devices, active profile and Easy-Switch.
 - **Notifications and OSD.** Low battery, profile change, gesture fired, connect/disconnect.
 - **Backup.** Export and import your configuration (merge or replace).
 
 ### Device images
 
-The GUI uses its own vector art. It contains no Logitech material.
+The GUI uses its own vector art. It contains no Logitech material. A device with no imported photo (or one the app does not recognize) is drawn as a minimal line icon of a generic mouse or keyboard.
 
 Optionally, you can import the official device photos locally. Use the home-screen menu item "Importar imagens do Logi Options+…" and point it at the official Logi Options+ installer that **you downloaded yourself**. The images are stored only on your computer, in `~/.local/share/openmacros/vendor`. They are never part of this repository.
 
@@ -198,7 +198,7 @@ PYTHONPATH=src python3 -m openmacros.gui                             # GUI, in a
 xvfb-run -a dbus-run-session -- python3 -m pytest -q                 # full test suite
 ```
 
-Tests use a simulated HID++ transport, so they need no hardware. For the GUI tests, install `xvfb`, `dbus` and `pytest`. CI (GitHub Actions, Ubuntu 24.04, system Python 3.12) runs the same pytest command plus `compileall`, `bash -n` and `shellcheck`. Details in [CONTRIBUTING.md](CONTRIBUTING.md).
+Tests use a simulated HID++ transport, so they need no hardware. For the GUI tests, install `xvfb`, `dbus` and `pytest`. Run the suite under `xvfb-run`: the X11 trigger tests grab keys on a real X server and can fail on a busy desktop session. CI (GitHub Actions, Ubuntu 24.04, system Python 3.12) runs the same pytest command plus `compileall`, `bash -n` and `shellcheck`. Details in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contributing
 

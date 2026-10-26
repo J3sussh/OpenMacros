@@ -34,14 +34,14 @@ Alternativa livre e independente ao Logi Options+ para Linux. Configura mouses e
   - sistema: bloquear tela, captura de tela, suspender, mostrar área de trabalho, silenciar microfone, Não perturbe (só XFCE), esvaziar lixeira.
 - **Smart Actions.** Automações "Se… Então…". Gatilhos: botão do dispositivo, atalho global de teclado, aplicativo abrindo/fechando/ganhando foco, dispositivo conectando/desconectando. Até 5 gatilhos e 32 passos (ações e atrasos). Modelos prontos, gravador de teclas, exportar e importar.
 - **Apontar e rolar.** Velocidade do ponteiro, DPI, rolagem de alta resolução, inversão de rolagem e SmartShift, conforme o dispositivo suporta. Pode ser sobreposto por aplicativo.
-- **Easy-Switch.** Troca de canal pela janela ou pela bandeja.
+- **Easy-Switch.** Troca de canal pela janela ou pela bandeja. O canal em uso aparece com o nome deste computador; o dispositivo não informa o nome dos outros canais.
 - **Bandeja com bateria.** Ícone pelo menor nível de bateria; menu com dispositivos, perfil ativo e Easy-Switch.
 - **Notificações e OSD.** Bateria baixa, troca de perfil, gesto disparado, conexão/desconexão.
 - **Backup.** Exporta e importa a configuração (mesclar ou substituir).
 
 ### Fotos dos dispositivos
 
-A GUI usa arte vetorial própria, sem nenhum material da Logitech.
+A GUI usa arte vetorial própria, sem nenhum material da Logitech. Um dispositivo sem foto importada (ou que o app não reconhece) é desenhado como um ícone de linha minimalista de mouse ou teclado genérico.
 
 Opcionalmente, você pode importar localmente as fotos oficiais dos dispositivos. Use o item de menu "Importar imagens do Logi Options+…" na tela inicial e aponte para o instalador oficial do Logi Options+ que **você mesmo baixou**. As imagens ficam só no seu computador, em `~/.local/share/openmacros/vendor`, e nunca entram neste repositório.
 
@@ -198,7 +198,7 @@ PYTHONPATH=src python3 -m openmacros.gui                             # GUI, em o
 xvfb-run -a dbus-run-session -- python3 -m pytest -q                 # suíte de testes completa
 ```
 
-Os testes usam um transporte HID++ simulado, então não precisam de hardware. Para os testes de GUI instale `xvfb`, `dbus` e `pytest`. A CI (GitHub Actions, Ubuntu 24.04, Python 3.12 do sistema) roda o mesmo pytest, mais `compileall`, `bash -n` e `shellcheck`. Detalhes em [CONTRIBUTING.md](CONTRIBUTING.md) (em inglês).
+Os testes usam um transporte HID++ simulado, então não precisam de hardware. Para os testes de GUI instale `xvfb`, `dbus` e `pytest`. Rode a suíte sob `xvfb-run`: os testes de gatilhos X11 capturam teclas em um servidor X real e podem falhar numa sessão de desktop em uso. A CI (GitHub Actions, Ubuntu 24.04, Python 3.12 do sistema) roda o mesmo pytest, mais `compileall`, `bash -n` e `shellcheck`. Detalhes em [CONTRIBUTING.md](CONTRIBUTING.md) (em inglês).
 
 ## Contribuindo
 
