@@ -182,3 +182,12 @@ def test_busy_error_is_retried(make_device):
         return orig(raw)
     tr.responder = responder
     assert dev.call(0x1000, 0)[0] == 7 and state["n"] == 2
+
+
+def test_label_current_uses_local_name_for_current_channel():
+    info = {"count": 3, "current": 1}
+    assert hosts.label_current(None, info, "Hackbook") == ["", "Hackbook", ""]
+    assert hosts.label_current(["A", "", ""], info, "Hackbook") == ["A", "Hackbook", ""]
+    assert hosts.label_current(["A", "B", "C"], info, "Hackbook") == ["A", "B", "C"]
+    assert hosts.label_current(None, {"count": 2, "current": None}, "x") == ["", ""]
+    assert hosts.label_current(None, {"count": 2, "current": 5}, "x") == ["", ""]

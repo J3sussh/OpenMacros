@@ -36,7 +36,8 @@ def make_sim():
     return SimulatedDevice([0x0003, 0x0005, 0x1000, 0x1814, 0x1B04, 0x2205, 0x2121], handlers, index=0xFF)
 
 
-def test_backend_with_direct_device(tmp_path):
+def test_backend_with_direct_device(tmp_path, monkeypatch):
+    monkeypatch.setattr("socket.gethostname", lambda: "meu-pc")
     sim = make_sim()
     tr = FakeTransport(sim.respond)
     mgr = Manager(Config(None), ActionExecutor(NullBackend()))
@@ -50,7 +51,7 @@ def test_backend_with_direct_device(tmp_path):
     assert d["controls"][1]["raw_xy"] and d["controls"][1]["default_task"] == 0xAD
     assert d["settings"]["pointer_speed"]["value"] == 256
     assert d["settings"]["hires_scroll"]["value"] is True
-    assert d["hosts"] == {"count": 3, "current": 1}
+    assert d["hosts"] == {"count": 3, "current": 1, "names": ["", "meu-pc", ""]}
 
     # atribuir gestos grava exatamente 00 D0 33 00 00 00
     mgr.set_assignment(d["id"], 0xD0, json.dumps({"type": "gestures"}))

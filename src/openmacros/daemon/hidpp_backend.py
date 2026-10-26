@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import os
+import socket
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -63,9 +64,7 @@ class RealDevice:
         self._read_settings()
         h = hosts.get_hosts(d)
         if h:
-            n = hosts.host_names(d, h["count"])
-            if n:
-                h["names"] = n
+            h["names"] = hosts.label_current(hosts.host_names(d, h["count"]), h, socket.gethostname())
             data["hosts"] = h
         self.online = True
 

@@ -43,6 +43,16 @@ def host_names(dev: Device, count: int) -> list[str] | None:
     return names if any(names) else None  # firmware do M720 devolve nomes vazios
 
 
+def label_current(names: list[str] | None, hosts_info: dict, local_name: str) -> list[str]:
+    """Nomes por canal, com o canal atual rotulado como esta máquina: se o dispositivo está conectado
+    aqui, o host do canal em uso é este computador. Canais sem nome ficam "" (a UI mostra "Computador N")."""
+    count, cur = hosts_info["count"], hosts_info.get("current")
+    out = (list(names or []) + [""] * count)[:count]
+    if isinstance(cur, int) and 0 <= cur < count and not out[cur]:
+        out[cur] = local_name
+    return out
+
+
 def change_host(dev: Device, host: int) -> None:
     """Dispara a troca; o dispositivo costuma desconectar sem responder (timeout ou hidraw
     fechado são o resultado esperado, sobretudo no Bluetooth)."""

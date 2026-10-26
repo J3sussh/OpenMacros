@@ -9,7 +9,7 @@ import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Gdk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Adw, Gdk, Gio, Gtk  # noqa: E402
+from gi.repository import Adw, Gdk, GLib, Gio, Gtk  # noqa: E402
 
 from .logic import DATA_DIR, palette_css  # noqa: E402
 from ..paths import icon_search_dirs  # noqa: E402
@@ -66,6 +66,8 @@ class OpenMacrosApp(Adw.Application):
 
 
 def main(argv: list[str] | None = None) -> int:
+    # sem isso o WM_CLASS vem de `python -m ...` ("__main__.py") e o app em foco aparece com esse nome
+    GLib.set_prgname(APP_ID)
     return OpenMacrosApp().run(argv if argv is not None else sys.argv)
 
 
